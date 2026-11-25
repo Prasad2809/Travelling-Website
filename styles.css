@@ -1,0 +1,126 @@
+/* ==========================================================================
+   WanderLuxe Travel Agency — Custom Stylesheet (styles.css)
+   Pairs with Tailwind CSS CDN for responsive layouts, typography, & print
+   ========================================================================== */
+
+:root {
+  --navy: #0B192C;
+  --navy-light: #162B47;
+  --teal: #0D9488;
+  --teal-dark: #0F766E;
+  --sand: #F8F5F0;
+  --sand-dark: #EAE3D5;
+  --ink: #1E293B;
+  --muted: #64748B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background-color: var(--sand);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+.font-display {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-sans-ui {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Custom subtle scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sand);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Hero subtle zoom & overlay */
+.hero-bg {
+  background-image: linear-gradient(
+      115deg,
+      rgba(11, 25, 44, 0.88) 0%,
+      rgba(11, 25, 44, 0.65) 52%,
+      rgba(11, 25, 44, 0.35) 100%
+    ),
+    url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=85');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Card hover elevation */
+.travel-card {
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.travel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -12px rgba(11, 25, 44, 0.16);
+}
+
+/* Range input styling */
+input[type='range'].wl-slider {
+  accent-color: #0D9488;
+  cursor: pointer;
+}
+
+/* Toast notification animation */
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.toast-enter {
+  animation: toastIn 0.25s ease-out forwards;
+}
+
+/* Print / Export styles for Itinerary */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-itinerary,
+  #printable-itinerary * {
+    visibility: visible;
+  }
+  #printable-itinerary {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 20px;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

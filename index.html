@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WanderLuxe — Bespoke Journeys, Stays &amp; Flights</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0B192C',
+            'navy-light': '#162B47',
+            tealbrand: '#0D9488',
+            'tealbrand-dark': '#0F766E',
+            sand: '#F8F5F0',
+            'sand-dark': '#EAE3D5',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Separate Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-sand text-slate-800 antialiased selection:bg-tealbrand selection:text-white">
+
+  <!-- ==================== TOP NAVIGATION BAR ==================== -->
+  <header class="sticky top-0 z-40 bg-navy/95 backdrop-blur-md text-white border-b border-white/10 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 lg:h-20">
+        <!-- Brand Logo -->
+        <a href="#top" class="flex items-center gap-2.5 group">
+          <div class="w-10 h-10 rounded-xl bg-tealbrand flex items-center justify-center shadow-lg shadow-tealbrand/30 group-hover:scale-105 transition">
+            <i data-lucide="compass" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <span class="font-display text-xl lg:text-2xl font-bold tracking-tight text-white">Wander<span class="text-teal-400">Luxe</span></span>
+            <span class="hidden sm:block text-[10px] uppercase tracking-[0.2em] text-slate-400 -mt-1">Curated Expeditions</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-200">
+          <a href="#destinations" class="hover:text-teal-400 transition">Destinations</a>
+          <a href="#bookings" class="hover:text-teal-400 transition">Hotels &amp; Flights</a>
+          <a href="#itinerary" class="hover:text-teal-400 transition">Itinerary</a>
+          <a href="#gallery" class="hover:text-teal-400 transition">Gallery</a>
+          <a href="#reviews" class="hover:text-teal-400 transition">Reviews</a>
+          <a href="#contact" class="hover:text-teal-400 transition">Contact</a>
+          <button
+            id="nav-admin-btn"
+            onclick="openAdminPanel()"
+            class="hidden items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 hover:bg-amber-500/30 transition text-xs font-semibold"
+          >
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+            Admin Panel
+          </button>
+        </nav>
+
+        <!-- Auth & Account Actions -->
+        <div class="hidden lg:flex items-center gap-3" id="desktop-auth-area">
+          <!-- Populated dynamically by JS -->
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="flex lg:hidden items-center gap-2">
+          <button
+            id="mobile-menu-btn"
+            onclick="toggleMobileMenu()"
+            class="p-2 rounded-lg text-slate-200 hover:bg-white/10 transition"
+            aria-label="Toggle Menu"
+          >
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-navy-light border-t border-white/10 px-4 py-4 space-y-3">
+      <div class="flex flex-col space-y-2 text-sm font-medium text-slate-200">
+        <a href="#destinations" onclick="toggleMobileMenu()" class="py-2 px-3 rounded-lg hover:bg-white/5">Destinations</a>
+        <a href="#bookings" onclick="toggleMobileMenu()" class="py-2 px-3 rounded-lg hover:bg-white/5">Hotels &amp; Flights</a>
+        <a href="#itinerary" onclick="toggleMobileMenu()" class="py-2 px-3 rounded-lg hover:bg-white/5">Itinerary Builder</a>
+        <a href="#gallery" onclick="toggleMobileMenu()" class="py-2 px-3 rounded-lg hover:bg-white/5">Photo Gallery</a>
+        <a href="#reviews" onclick="toggleMobileMenu()" class="py-2 px-3 rounded-lg hover:bg-white/5">Reviews &amp; Ratings</a>
+        <a href="#contact" onclick="toggleMobileMenu()" class="py-2 px-3 rounded-lg hover:bg-white/5">Contact Us</a>
+        <button
+          id="mobile-admin-btn"
+          onclick="toggleMobileMenu(); openAdminPanel();"
+          class="hidden items-center gap-2 py-2 px-3 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/30 text-left font-semibold"
+        >
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          Admin Panel
+        </button>
+      </div>
+      <div id="mobile-auth-area" class="pt-3 border-t border-white/10 flex flex-wrap gap-2">
+        <!-- Populated dynamically by JS -->
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section id="top" class="hero-bg relative text-white pt-16 pb-24 lg:pt-24 lg:pb-32">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs font-medium text-teal-300 mb-6">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>2026–2027 Curated Voyages • Flexible Booking &amp; Concierge</span>
+        </div>
+
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-5">
+          Discover the World Beyond the Ordinary.
+        </h1>
+        <p class="text-base sm:text-lg text-slate-200 max-w-2xl mb-8 leading-relaxed">
+          Handcrafted tour packages, boutique stays, seamless flight reservations, and custom day-by-day itineraries—all in one seamless travel studio.
+        </p>
+
+        <!-- Quick Search Bar -->
+        <form
+          onsubmit="handleHeroSearch(event)"
+          class="bg-white rounded-2xl p-2 sm:p-2.5 shadow-2xl text-slate-800 grid grid-cols-1 sm:grid-cols-12 gap-2 items-center"
+        >
+          <div class="sm:col-span-5 flex items-center gap-2.5 px-3 py-2 rounded-xl bg-sand/70">
+            <i data-lucide="map-pin" class="w-4 h-4 text-tealbrand shrink-0"></i>
+            <input
+              id="hero-search-input"
+              type="text"
+              placeholder="Where to? (e.g., Kyoto, Amalfi, Bali...)"
+              class="w-full bg-transparent text-sm focus:outline-none placeholder:text-slate-400"
+            />
+          </div>
+          <div class="sm:col-span-4 flex items-center gap-2.5 px-3 py-2 rounded-xl bg-sand/70">
+            <i data-lucide="tag" class="w-4 h-4 text-tealbrand shrink-0"></i>
+            <select id="hero-category-select" class="w-full bg-transparent text-sm focus:outline-none text-slate-700">
+              <option value="All">All Styles</option>
+              <option value="Beach">Beach &amp; Islands</option>
+              <option value="Mountain">Mountains &amp; Trek</option>
+              <option value="Cultural">Cultural &amp; Heritage</option>
+              <option value="Adventure">Adventure &amp; Safari</option>
+              <option value="Luxury">Luxury Escapes</option>
+            </select>
+          </div>
+          <button
+            type="submit"
+            class="sm:col-span-3 w-full py-3 px-4 rounded-xl bg-tealbrand hover:bg-tealbrand-dark text-white font-semibold text-sm flex items-center justify-center gap-2 transition shadow-md shadow-tealbrand/25"
+          >
+            <i data-lucide="search" class="w-4 h-4"></i>
+            <span>Explore</span>
+          </button>
+        </form>
+
+        <!-- Quick Stats -->
+        <div class="mt-10 grid grid-cols-3 gap-4 max-w-lg pt-6 border-t border-white/15">
+          <div>
+            <div class="font-display text-2xl sm:text-3xl font-bold text-white">48+</div>
+            <div class="text-xs text-slate-300">Global Destinations</div>
+          </div>
+          <div>
+            <div class="font-display text-2xl sm:text-3xl font-bold text-teal-300">4.9 ★</div>
+            <div class="text-xs text-slate-300">Verified Travelers</div>
+          </div>
+          <div>
+            <div class="font-display text-2xl sm:text-3xl font-bold text-white">24/7</div>
+            <div class="text-xs text-slate-300">Trip Concierge</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DESTINATIONS & SEARCH/FILTER ==================== -->
+  <section id="destinations" class="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-tealbrand">Curated Packages</span>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-navy mt-1">Featured Destinations</h2>
+        <p class="text-slate-600 mt-1.5 max-w-xl">Filter by travel style, max budget, or keyword—then open any package to inspect full itineraries and book.</p>
+      </div>
+      <div class="flex items-center gap-2 text-sm text-slate-600">
+        <span id="results-count" class="font-semibold text-navy">0</span> packages found
+      </div>
+    </div>
+
+    <!-- Filter & Search Controls Card -->
+    <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200/80 mb-10 space-y-5">
+      <!-- Category Pills -->
+      <div class="flex flex-wrap items-center gap-2" id="category-pills">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Search, Max Price Slider, Duration & Sort -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-100 items-end">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Search Keyword</label>
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input
+              id="filter-search"
+              type="text"
+              oninput="renderDestinations()"
+              placeholder="Country, city, or highlight..."
+              class="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+            />
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
+            <span>Max Price / Person</span>
+            <span id="price-slider-value" class="text-tealbrand font-bold">$5,000</span>
+          </div>
+          <input
+            id="filter-max-price"
+            type="range"
+            min="800"
+            max="6000"
+            step="100"
+            value="5000"
+            oninput="updatePriceSliderLabel(); renderDestinations();"
+            class="w-full wl-slider"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Trip Duration</label>
+          <select
+            id="filter-duration"
+            onchange="renderDestinations()"
+            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-tealbrand"
+          >
+            <option value="All">Any Duration</option>
+            <option value="short">Short (1–5 Days)</option>
+            <option value="medium">Medium (6–8 Days)</option>
+            <option value="long">Extended (9+ Days)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Sort By</label>
+          <div class="flex gap-2">
+            <select
+              id="filter-sort"
+              onchange="renderDestinations()"
+              class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-tealbrand"
+            >
+              <option value="featured">Recommended</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating-desc">Highest Rated</option>
+            </select>
+            <button
+              type="button"
+              onclick="resetFilters()"
+              title="Reset Filters"
+              class="px-3 py-2 rounded-xl border border-slate-200 hover:bg-sand text-slate-600 text-sm transition shrink-0"
+            >
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Destinations Grid -->
+    <div id="destinations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+      <!-- Cards rendered by JS -->
+    </div>
+  </section>
+
+  <!-- ==================== HOTEL & FLIGHT BOOKING SECTION ==================== -->
+  <section id="bookings" class="py-16 lg:py-24 bg-navy text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-teal-400">Direct Reservations</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold mt-1">Hotels &amp; Flights</h2>
+          <p class="text-slate-300 mt-1.5 max-w-xl">Book handpicked partner hotels or round-trip/one-way flights with instant fare calculation and saved confirmation codes.</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="inline-flex p-1 rounded-xl bg-navy-light border border-white/10 self-start">
+          <button
+            id="tab-hotel-btn"
+            onclick="switchBookingTab('hotel')"
+            class="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-tealbrand text-white transition"
+          >
+            <i data-lucide="building-2" class="w-4 h-4"></i>
+            Hotel Booking
+          </button>
+          <button
+            id="tab-flight-btn"
+            onclick="switchBookingTab('flight')"
+            class="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-300 hover:text-white transition"
+          >
+            <i data-lucide="plane" class="w-4 h-4"></i>
+            Flight Booking
+          </button>
+        </div>
+      </div>
+
+      <!-- HOTEL BOOKING PANEL -->
+      <div id="hotel-booking-panel" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <form
+          onsubmit="handleHotelBooking(event)"
+          class="lg:col-span-7 bg-white text-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-5"
+        >
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <h3 class="font-display text-2xl font-bold text-navy">Reserve Your Stay</h3>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-tealbrand/10 text-tealbrand">Free Cancellation up to 48h</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Partner Property</label>
+              <select
+                id="hotel-select"
+                onchange="calculateHotelEstimate()"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-sand/50 focus:outline-none focus:border-tealbrand"
+              >
+                <!-- Populated by JS -->
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Room Category</label>
+              <select
+                id="hotel-room-type"
+                onchange="calculateHotelEstimate()"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-sand/50 focus:outline-none focus:border-tealbrand"
+              >
+                <option value="Standard|1">Standard King / Twin (1.0x)</option>
+                <option value="Deluxe Ocean/View|1.35">Deluxe View Suite (1.35x)</option>
+                <option value="Grand Villa / Penthouse|1.85">Grand Villa / Penthouse (1.85x)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Check-In</label>
+              <input
+                id="hotel-checkin"
+                type="date"
+                required
+                onchange="calculateHotelEstimate()"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Check-Out</label>
+              <input
+                id="hotel-checkout"
+                type="date"
+                required
+                onchange="calculateHotelEstimate()"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Guests</label>
+              <input
+                id="hotel-guests"
+                type="number"
+                min="1"
+                max="8"
+                value="2"
+                onchange="calculateHotelEstimate()"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Guest Full Name</label>
+            <input
+              id="hotel-guest-name"
+              type="text"
+              required
+              placeholder="e.g., Elena Rostova"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+            />
+          </div>
+
+          <!-- Live Estimate Box -->
+          <div class="bg-sand rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 border border-sand-dark">
+            <div>
+              <div class="text-xs text-slate-500">Estimated Stay (<span id="hotel-nights-label">3</span> nights)</div>
+              <div id="hotel-estimate-total" class="font-display text-2xl font-bold text-navy">$960</div>
+            </div>
+            <button
+              type="submit"
+              class="px-6 py-3 rounded-xl bg-tealbrand hover:bg-tealbrand-dark text-white font-semibold text-sm transition shadow-md shadow-tealbrand/20"
+            >
+              Confirm Hotel Booking
+            </button>
+          </div>
+        </form>
+
+        <!-- Featured Hotel Preview Card -->
+        <div id="hotel-preview-card" class="lg:col-span-5 bg-navy-light rounded-2xl overflow-hidden border border-white/10 shadow-xl">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- FLIGHT BOOKING PANEL -->
+      <div id="flight-booking-panel" class="hidden grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <form
+          onsubmit="handleFlightBooking(event)"
+          class="lg:col-span-7 bg-white text-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-5"
+        >
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <h3 class="font-display text-2xl font-bold text-navy">Search &amp; Book Flights</h3>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800">Instant E-Ticket</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Origin City / Airport</label>
+              <input
+                id="flight-origin"
+                type="text"
+                required
+                value="Mumbai (BOM)"
+                oninput="calculateFlightEstimate()"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Destination City / Airport</label>
+              <input
+                id="flight-destination"
+                type="text"
+                required
+                value="Tokyo (NRT)"
+                oninput="calculateFlightEstimate()"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Departure Date</label>
+              <input
+                id="flight-depart-date"
+                type="date"
+                required
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Cabin Class</label>
+              <select
+                id="flight-cabin"
+                onchange="calculateFlightEstimate()"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-sand/50 focus:outline-none focus:border-tealbrand"
+              >
+                <option value="Economy|540">Economy ($540 / pax)</option>
+                <option value="Business Class|1480">Business Class ($1,480 / pax)</option>
+                <option value="First Class|2650">First Class ($2,650 / pax)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Passengers</label>
+              <input
+                id="flight-passengers"
+                type="number"
+                min="1"
+                max="9"
+                value="1"
+                onchange="calculateFlightEstimate()"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Lead Passenger Name</label>
+            <input
+              id="flight-passenger-name"
+              type="text"
+              required
+              placeholder="e.g., Arjun Mehta"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+            />
+          </div>
+
+          <div class="bg-sand rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 border border-sand-dark">
+            <div>
+              <div class="text-xs text-slate-500">Total Flight Fare (incl. taxes)</div>
+              <div id="flight-estimate-total" class="font-display text-2xl font-bold text-navy">$540</div>
+            </div>
+            <button
+              type="submit"
+              class="px-6 py-3 rounded-xl bg-tealbrand hover:bg-tealbrand-dark text-white font-semibold text-sm transition shadow-md shadow-tealbrand/20"
+            >
+              Book Flight Seat
+            </button>
+          </div>
+        </form>
+
+        <!-- Flight Route Card -->
+        <div class="lg:col-span-5 bg-navy-light rounded-2xl p-6 sm:p-8 border border-white/10 shadow-xl space-y-6">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-widest text-teal-400">Flight Summary</span>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-white/10 text-slate-200">Direct &amp; 1-Stop</span>
+          </div>
+          <div class="flex items-center justify-between gap-3 py-4 border-y border-white/10">
+            <div>
+              <div id="preview-origin" class="font-display text-2xl font-bold text-white">Mumbai (BOM)</div>
+              <div class="text-xs text-slate-400">Departure</div>
+            </div>
+            <div class="flex-1 flex items-center justify-center gap-2 text-teal-400">
+              <span class="h-px flex-1 bg-teal-400/40"></span>
+              <i data-lucide="plane" class="w-5 h-5"></i>
+              <span class="h-px flex-1 bg-teal-400/40"></span>
+            </div>
+            <div class="text-right">
+              <div id="preview-dest" class="font-display text-2xl font-bold text-white">Tokyo (NRT)</div>
+              <div class="text-xs text-slate-400">Arrival</div>
+            </div>
+          </div>
+          <ul class="space-y-2.5 text-sm text-slate-300">
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400"></i> Complimentary seat selection &amp; carry-on</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400"></i> 24-hour flexible date change waiver</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400"></i> Syncs automatically to your Bookings &amp; Admin</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TRAVEL ITINERARY BUILDER ==================== -->
+  <section id="itinerary" class="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div id="printable-itinerary">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-tealbrand">Day-by-Day Planner</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold text-navy mt-1">Custom Travel Itinerary</h2>
+          <p class="text-slate-600 mt-1.5 max-w-xl">Add custom activities by day, load a preset package itinerary, reorder or remove items, and print or export your plan.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2.5 no-print">
+          <select
+            id="itinerary-preset-select"
+            onchange="loadPresetItinerary(this.value)"
+            class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-medium text-navy focus:outline-none focus:border-tealbrand"
+          >
+            <option value="">Load Package Template...</option>
+          </select>
+          <button
+            type="button"
+            onclick="exportItineraryTxt()"
+            class="px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-sand text-navy text-sm font-semibold flex items-center gap-1.5 transition"
+          >
+            <i data-lucide="download" class="w-4 h-4"></i>
+            Export .TXT
+          </button>
+          <button
+            type="button"
+            onclick="window.print()"
+            class="px-4 py-2.5 rounded-xl bg-navy hover:bg-navy-light text-white text-sm font-semibold flex items-center gap-1.5 transition"
+          >
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            Print Plan
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Add Activity Form -->
+        <form
+          onsubmit="addItineraryItem(event)"
+          class="lg:col-span-4 bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 space-y-4 no-print"
+        >
+          <h3 class="font-display text-xl font-bold text-navy">Add Activity</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Day #</label>
+              <input
+                id="itin-day"
+                type="number"
+                min="1"
+                max="30"
+                value="1"
+                required
+                class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Time</label>
+              <input
+                id="itin-time"
+                type="time"
+                value="09:00"
+                required
+                class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Activity Title</label>
+            <input
+              id="itin-title"
+              type="text"
+              required
+              placeholder="e.g., Sunrise Boat Tour"
+              class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Location / Notes</label>
+            <input
+              id="itin-notes"
+              type="text"
+              placeholder="Meeting point, ticket ref, or dining notes"
+              class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full py-2.5 px-4 rounded-xl bg-tealbrand hover:bg-tealbrand-dark text-white font-semibold text-sm flex items-center justify-center gap-2 transition"
+          >
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            Add to Itinerary
+          </button>
+        </form>
+
+        <!-- Timeline Display -->
+        <div id="itinerary-timeline" class="lg:col-span-8 space-y-5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PHOTO GALLERY & LIGHTBOX ==================== -->
+  <section id="gallery" class="py-16 lg:py-24 bg-white border-y border-slate-200/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-tealbrand">Visual Journal</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold text-navy mt-1">Traveler Photo Gallery</h2>
+          <p class="text-slate-600 mt-1">Click any photograph to view in full-screen lightbox mode.</p>
+        </div>
+        <div class="flex flex-wrap gap-2" id="gallery-filters">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== REVIEWS & RATINGS ==================== -->
+  <section id="reviews" class="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-tealbrand">Guest Stories</span>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-navy mt-1">Reviews &amp; Ratings</h2>
+        <p class="text-slate-600 mt-1">Real feedback from travelers who journeyed with WanderLuxe.</p>
+      </div>
+      <div class="bg-white px-5 py-3 rounded-2xl border border-slate-200 flex items-center gap-3 shadow-sm">
+        <div class="font-display text-3xl font-bold text-navy" id="avg-rating-display">4.9</div>
+        <div>
+          <div class="text-amber-500 text-sm tracking-tight" id="avg-rating-stars">★★★★★</div>
+          <div class="text-xs text-slate-500" id="review-count-label">Based on 0 reviews</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Submit Review Form -->
+      <form
+        onsubmit="handleReviewSubmit(event)"
+        class="lg:col-span-4 bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 space-y-4"
+      >
+        <h3 class="font-display text-xl font-bold text-navy">Share Your Experience</h3>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Your Name</label>
+          <input
+            id="review-name"
+            type="text"
+            required
+            placeholder="e.g., Maya Patel"
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Destination Visited</label>
+          <select
+            id="review-destination"
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm bg-sand/50 focus:outline-none focus:border-tealbrand"
+          >
+            <!-- Populated by JS -->
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Rating</label>
+          <select
+            id="review-rating"
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm bg-sand/50 focus:outline-none focus:border-tealbrand"
+          >
+            <option value="5">★★★★★ (5.0 - Exceptional)</option>
+            <option value="4">★★★★☆ (4.0 - Great)</option>
+            <option value="3">★★★☆☆ (3.0 - Good)</option>
+            <option value="2">★★☆☆☆ (2.0 - Fair)</option>
+            <option value="1">★☆☆☆☆ (1.0 - Poor)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Your Review</label>
+          <textarea
+            id="review-comment"
+            rows="3"
+            required
+            placeholder="Tell fellow travelers about the guides, stays, and highlights..."
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="w-full py-2.5 px-4 rounded-xl bg-tealbrand hover:bg-tealbrand-dark text-white font-semibold text-sm transition"
+        >
+          Publish Review
+        </button>
+      </form>
+
+      <!-- Reviews List -->
+      <div id="reviews-list" class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT FORM & FOOTER ==================== -->
+  <section id="contact" class="py-16 lg:py-24 bg-sand-dark/60 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div class="lg:col-span-5 space-y-5">
+          <span class="text-xs font-bold uppercase tracking-widest text-tealbrand">Get In Touch</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold text-navy">Plan a Tailored Trip With Us</h2>
+          <p class="text-slate-600 leading-relaxed">
+            Have custom group dates, honeymoon requests, or visa/transfer questions? Send a message to our travel specialists and receive a response within 24 hours.
+          </p>
+          <div class="space-y-3 pt-2 text-sm text-slate-700">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-tealbrand/15 text-tealbrand flex items-center justify-center">
+                <i data-lucide="mail" class="w-4 h-4"></i>
+              </div>
+              <span>concierge@wanderluxe.example</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-tealbrand/15 text-tealbrand flex items-center justify-center">
+                <i data-lucide="phone" class="w-4 h-4"></i>
+              </div>
+              <span>+1 (800) 555-0194</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-tealbrand/15 text-tealbrand flex items-center justify-center">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+              </div>
+              <span>742 Harborview Promenade, Suite 400</span>
+            </div>
+          </div>
+        </div>
+
+        <form
+          onsubmit="handleContactSubmit(event)"
+          class="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-4"
+        >
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Full Name</label>
+              <input
+                id="contact-name"
+                type="text"
+                required
+                placeholder="Your name"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Email Address</label>
+              <input
+                id="contact-email"
+                type="email"
+                required
+                placeholder="you@example.com"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Subject</label>
+            <input
+              id="contact-subject"
+              type="text"
+              required
+              placeholder="Custom group tour, dates, or booking inquiry"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Message</label>
+            <textarea
+              id="contact-message"
+              rows="4"
+              required
+              placeholder="Share your preferred travel month, travelers count, and wishlist..."
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-tealbrand"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="px-6 py-3 rounded-xl bg-navy hover:bg-navy-light text-white font-semibold text-sm inline-flex items-center gap-2 transition"
+          >
+            <i data-lucide="send" class="w-4 h-4"></i>
+            Send Inquiry
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-navy text-slate-400 py-10 text-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-white font-display text-lg font-bold">
+        <i data-lucide="compass" class="w-5 h-5 text-teal-400"></i>
+        <span>WanderLuxe</span>
+      </div>
+      <p class="text-center text-xs">Frontend Travel Platform Demo • Data persisted locally in your browser via <code>localStorage</code>.</p>
+      <div class="text-xs">© 2026 WanderLuxe Travel Co. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. Auth Modal (Login & Register) -->
+  <div id="auth-modal" class="fixed inset-0 z-50 hidden bg-navy/75 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-7 shadow-2xl relative text-slate-800">
+      <button onclick="closeModal('auth-modal')" class="absolute right-4 top-4 p-1.5 rounded-lg text-slate-400 hover:bg-slate-100">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex gap-2 mb-6 border-b border-slate-100 pb-3">
+        <button id="auth-tab-login" onclick="switchAuthTab('login')" class="px-4 py-2 rounded-xl text-sm font-bold bg-navy text-white">Log In</button>
+        <button id="auth-tab-register" onclick="switchAuthTab('register')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Email</label>
+          <input id="login-email" type="email" required value="traveler@wanderluxe.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Password</label>
+          <input id="login-password" type="password" required value="traveler123" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+        </div>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-tealbrand hover:bg-tealbrand-dark text-white font-semibold text-sm transition">
+          Sign In
+        </button>
+        <div class="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2">
+          <button type="button" onclick="quickDemoLogin('traveler')" class="py-2 px-3 rounded-xl bg-sand hover:bg-sand-dark text-navy text-xs font-semibold transition">
+            Traveler Demo
+          </button>
+          <button type="button" onclick="quickDemoLogin('admin')" class="py-2 px-3 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-semibold transition">
+            Switch to Admin Demo
+          </button>
+        </div>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" onsubmit="handleRegister(event)" class="hidden space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Full Name</label>
+          <input id="reg-name" type="text" required placeholder="Alex Rivera" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Email</label>
+          <input id="reg-email" type="email" required placeholder="alex@example.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Password</label>
+          <input id="reg-password" type="password" required minlength="6" placeholder="At least 6 characters" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+        </div>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-navy hover:bg-navy-light text-white font-semibold text-sm transition">
+          Create Traveler Account
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Package Details & Booking Modal -->
+  <div id="package-modal" class="fixed inset-0 z-50 hidden bg-navy/75 backdrop-blur-sm items-center justify-center p-4 overflow-y-auto">
+    <div id="package-modal-content" class="bg-white rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl relative text-slate-800 my-8">
+      <!-- Populated dynamically by JS -->
+    </div>
+  </div>
+
+  <!-- 3. User Profile & Reservations Modal -->
+  <div id="profile-modal" class="fixed inset-0 z-50 hidden bg-navy/75 backdrop-blur-sm items-center justify-center p-4 overflow-y-auto">
+    <div id="profile-modal-content" class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl relative text-slate-800 my-8">
+      <!-- Populated dynamically by JS -->
+    </div>
+  </div>
+
+  <!-- 4. Gallery Lightbox Modal -->
+  <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-black/90 items-center justify-center p-4">
+    <button onclick="closeModal('lightbox-modal')" class="absolute right-5 top-5 p-2 rounded-full bg-white/10 text-white hover:bg-white/20">
+      <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
+    <button onclick="stepLightbox(-1)" class="absolute left-4 sm:left-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20">
+      <i data-lucide="chevron-left" class="w-6 h-6"></i>
+    </button>
+    <div class="max-w-4xl w-full text-center">
+      <img id="lightbox-img" src="" alt="" class="max-h-[75vh] mx-auto rounded-xl object-contain shadow-2xl" />
+      <div class="mt-4 text-white">
+        <div id="lightbox-title" class="font-display text-xl font-bold"></div>
+        <div id="lightbox-caption" class="text-sm text-slate-300 mt-1"></div>
+      </div>
+    </div>
+    <button onclick="stepLightbox(1)" class="absolute right-4 sm:right-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20">
+      <i data-lucide="chevron-right" class="w-6 h-6"></i>
+    </button>
+  </div>
+
+  <!-- 5. Admin Panel Modal -->
+  <div id="admin-modal" class="fixed inset-0 z-50 hidden bg-navy/80 backdrop-blur-sm items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-5xl w-full p-6 sm:p-8 shadow-2xl relative text-slate-800 my-8">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-700 flex items-center justify-center">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-display text-2xl font-bold text-navy">Admin Operations Panel</h3>
+            <p class="text-xs text-slate-500">Manage tour packages, reservations, and platform user roles</p>
+          </div>
+        </div>
+        <button onclick="closeModal('admin-modal')" class="p-2 rounded-lg text-slate-400 hover:bg-slate-100">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Admin Sub-Tabs -->
+      <div class="flex flex-wrap gap-2 mb-6">
+        <button id="admin-tab-packages" onclick="switchAdminTab('packages')" class="px-4 py-2 rounded-xl text-sm font-semibold bg-navy text-white">Packages</button>
+        <button id="admin-tab-bookings" onclick="switchAdminTab('bookings')" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Bookings</button>
+        <button id="admin-tab-users" onclick="switchAdminTab('users')" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Users</button>
+      </div>
+
+      <div id="admin-content" class="space-y-6">
+        <!-- Populated dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none"></div>
+
+  <!-- Separate Application Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
