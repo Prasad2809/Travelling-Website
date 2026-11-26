@@ -32,7 +32,9 @@ Run Locally
 3. Open index.html using the Live Server extension.
 You can also run a local server from the project folder:
 python -m http.server 8000
-Then open http://localhost:8000 in your browser.
+
+WEBSITE :
+
 Demo Login
 Traveler account
 - Email: traveler@wanderluxe.com
